@@ -4,14 +4,17 @@ import re
 from SimpleSpiders.items import GpuVideoGraphicItem
 from scrapy.loader import ItemLoader
 
-class GpusvideographicscardsSpider(scrapy.Spider):
-    name = "GpusVideoGraphicsCards"
+class GpusvideographicscardsdetailSpider(scrapy.Spider):
+    name = "GpusVideoGraphicsCardsDetail"
     allowed_domains = ["www.newegg.com"]
-    start_urls = [
-        "https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-1?Tid=7709"
-    ]
+    start_urls = ["https://www.newegg.com/gigabyte-geforce-rtx-4070-gv-n4070wf3oc-12gd/p/N82E16814932611"]
 
-    def parse_detail(self, response, item):
+    def __init__(self, filename=None):
+        if filename:
+            with open(filename, 'r') as f:
+                self.start_urls = f.readlines()
+
+    def parse(self, response):
 
         max_resolution = ""
         display_port = ""
@@ -60,8 +63,10 @@ class GpusvideographicscardsSpider(scrapy.Spider):
             else:
                 continue
                 
-            
+        item_loader = ItemLoader(item = GpuVideoGraphicItem())
+        item_loader.add_value("item_id", response.url)
 
+        item = item_loader.load_item()
         item["others"] = {
             "MaxResolution": max_resolution,
             "DisplayPort": display_port,
@@ -71,41 +76,3 @@ class GpusvideographicscardsSpider(scrapy.Spider):
         }
 
         yield item
-
-
-    def parse(self, response):
-
-        for item in response.css(".item-cell"):
-
-            detail_url = item.css(".item-title::attr(\"href\")").extract_first()
-
-            price = item.css(".price-current strong::text").extract_first()
-            price_decimal = item.css(".price-current sup::text").extract_first()
-
-            price_current = "0"
-            if(price and price_decimal):
-                price_current = re.sub("\D","",price) + price_decimal
-
-            item_loader = ItemLoader(item = GpuVideoGraphicItem(), selector=item)
-            item_loader.add_css("item_id", ".item-title::attr(\"href\")")
-            item_loader.add_css("title", ".item-title::text")
-            item_loader.add_css("brand", ".item-brand img::attr(\"title\")")
-            item_loader.add_css("price_shipping", ".price-ship::text")
-            item_loader.add_css("rating", "a.item-rating::attr(\"title\")")
-            item_loader.add_css("rating_num", "a.item-rating .item-rating-num::text")
-            item_loader.add_css("image_url", ".item-img img::attr(\"src\")")
-            item_loader.add_value("price", price_current)
-            item_loader.add_value("url", detail_url)
-            item_loader.add_value("referer", response.url)
-
-            yield item_loader.load_item()
-            
-        # Collect pagination to get current page
-        CURRENT_SELECTOR = ".list-tool-pagination .btn-group .btn-group-cell .is-current::text"
-        current_page = response.css(CURRENT_SELECTOR).extract_first()
-        if current_page:
-            next_page = int(current_page) + 1
-
-            print("Run next page: %s -> %s", current_page, next_page)
-
-            yield scrapy.Request("https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-"+ str(next_page) +"?Tid=7709")

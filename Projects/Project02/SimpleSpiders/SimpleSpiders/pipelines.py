@@ -50,9 +50,26 @@ class SimplespidersPipeline:
         self.cur.execute("select * from products where item_id = %s", (item['item_id'],))
         result = self.cur.fetchone()
 
+        addtional_information = ""
+        if('others' in item):
+            addtional_information = str(item["others"])
+
         ## If it is in DB, create log message
         if result:
             spider.logger.warn("Item already in database: %s" % item['item_id'])
+
+            self.cur.execute(""" 
+                UPDATE products
+                SET others = %s
+                WHERE item_id = %s;
+                """, (
+                addtional_information,
+                item["item_id"],
+            ))
+
+            self.conn.commit()
+
+            spider.logger.warn("Item updated in database: %s" % item['item_id'])
 
         else:
             price_total = 0.0
@@ -95,7 +112,7 @@ class SimplespidersPipeline:
                 item["image_url"] if 'image_url' in item else "",
                 item["url"] if 'url' in item else "",
                 item["referer"] if 'referer' in item else "",
-                str(item["others"]),
+                addtional_information,
             ))
 
             ## Execute insert of data into database
