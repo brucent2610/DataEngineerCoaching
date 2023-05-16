@@ -32,6 +32,8 @@ class SimplespidersPipeline:
             price_shipping FLOAT,
             price_total FLOAT,
             image_url TEXT,
+            url TEXT,
+            referer TEXT,
             others TEXT,
             PRIMARY KEY (item_id)
         )
@@ -67,7 +69,11 @@ class SimplespidersPipeline:
                 price_shipping, 
                 price_total, 
                 image_url, 
+                url, 
+                referer, 
                 others) VALUES (
+                    %s,
+                    %s,
                     %s,
                     %s,
                     %s,
@@ -87,6 +93,8 @@ class SimplespidersPipeline:
                 item["price_shipping"] if 'price_shipping' in item else 0,
                 price_total,
                 item["image_url"] if 'image_url' in item else "",
+                item["url"] if 'url' in item else "",
+                item["referer"] if 'referer' in item else "",
                 str(item["others"]),
             ))
 

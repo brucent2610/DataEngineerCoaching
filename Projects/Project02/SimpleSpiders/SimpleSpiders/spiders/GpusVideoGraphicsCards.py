@@ -95,6 +95,8 @@ class GpusvideographicscardsSpider(scrapy.Spider):
             item_loader.add_css("rating_num", "a.item-rating .item-rating-num::text")
             item_loader.add_css("image_url", ".item-img img::attr(\"src\")")
             item_loader.add_value("price", price_current)
+            item_loader.add_value("url", detail_url)
+            item_loader.add_value("referer", response.url)
 
             yield scrapy.Request(
                 detail_url,
@@ -111,4 +113,7 @@ class GpusvideographicscardsSpider(scrapy.Spider):
         current_page = response.css(CURRENT_SELECTOR).extract_first()
         if current_page:
             next_page = int(current_page) + 1
+
+            print("Run next page: %s -> %s", current_page, next_page)
+
             yield scrapy.Request("https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-"+ str(next_page) +"?Tid=7709")

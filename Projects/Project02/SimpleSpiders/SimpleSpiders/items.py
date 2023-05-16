@@ -30,10 +30,14 @@ def price_shipping_transfered(value):
         return 0
     if(value == "Free Shipping"):
         value = "0"
+    if(value == "Special Shipping"):
+        value = "0"
     else:
         price_shipping_string_list = re.findall(r'[\d\.\d]+', value)
         if(price_shipping_string_list[0]):
             return float(price_shipping_string_list[0])
+        else:
+            return 0
     return float(value)
 
 def rating_transfered(value):
@@ -72,6 +76,16 @@ def price_transfered(value):
         return 0
     return float(value)
 
+def url_transfered(value):
+    if(value is None): 
+        return ""
+    return value
+
+def referer_transfered(value):
+    if(value is None): 
+        return ""
+    return value
+
 class GpuVideoGraphicItem(scrapy.Item):
 
     # define the fields for your item here like:
@@ -83,4 +97,6 @@ class GpuVideoGraphicItem(scrapy.Item):
     price = scrapy.Field(default=None, input_processor = MapCompose(price_transfered), output_processor=TakeFirst())
     price_shipping = scrapy.Field(default=None, input_processor = MapCompose(price_shipping_transfered), output_processor=TakeFirst())
     image_url = scrapy.Field(default=None, input_processor = MapCompose(image_transfered), output_processor=TakeFirst())
+    url = scrapy.Field(default=None, input_processor = MapCompose(url_transfered), output_processor=TakeFirst())
+    referer = scrapy.Field(default=None, input_processor = MapCompose(referer_transfered), output_processor=TakeFirst())
     others = scrapy.Field(default=None, output_processor=TakeFirst())
