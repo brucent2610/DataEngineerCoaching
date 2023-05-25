@@ -4,11 +4,15 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import mysql.connector
+import os
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 
+TABLE = "products"
+
 class SimplespidersPipeline:
+    
     def __init__(self):
         self.conn = mysql.connector.connect(
             host = '127.0.0.1',
@@ -22,7 +26,7 @@ class SimplespidersPipeline:
 
         ## Create quotes table if none exists
         self.cur.execute("""
-        CREATE TABLE IF NOT EXISTS products(
+        CREATE TABLE IF NOT EXISTS products_parallel(
             item_id VARCHAR(255) NOT NULL,
             title VARCHAR(255),
             brand VARCHAR(255),
@@ -41,13 +45,16 @@ class SimplespidersPipeline:
 
     def process_item(self, item, spider):
 
+
+        pid = os.getpid()
+        print("PID:", pid)
         print(item)
 
         ## Define insert statement
         item = dict(item)
 
         ## Check to see if text is already in database 
-        self.cur.execute("select * from products where item_id = %s", (item['item_id'],))
+        self.cur.execute("select * from products_parallel where item_id = %s", (item['item_id'],))
         result = self.cur.fetchone()
 
         addtional_information = ""
@@ -76,7 +83,7 @@ class SimplespidersPipeline:
             if('price' in item and 'price_shipping' in item): 
                 price_total = item["price"] + item["price_shipping"]
 
-            self.cur.execute(""" INSERT INTO products (
+            self.cur.execute(""" INSERT INTO products_parallel (
                 item_id, 
                 title, 
                 brand, 

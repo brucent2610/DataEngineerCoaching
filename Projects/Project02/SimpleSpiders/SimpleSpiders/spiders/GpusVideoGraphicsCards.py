@@ -11,6 +11,13 @@ class GpusvideographicscardsSpider(scrapy.Spider):
         "https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-1?Tid=7709"
     ]
 
+    def __init__(self, pages="1,100"):
+        rangePages = pages.split(",")
+        for i in range(int(rangePages[0]), int(rangePages[1]) + 1):
+            list_url = "https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-"+ str(i) +"?Tid=7709"
+            print(list_url)
+            self.start_urls.append(list_url)
+
     def parse_detail(self, response, item):
 
         max_resolution = ""
@@ -98,14 +105,15 @@ class GpusvideographicscardsSpider(scrapy.Spider):
             item_loader.add_value("url", detail_url)
             item_loader.add_value("referer", response.url)
 
-            yield item_loader.load_item()
+            # yield item_loader.load_item()
+            yield scrapy.Request(detail_url, callback=self.parse_detail, cb_kwargs=dict(item=item_loader.load_item()))
             
         # Collect pagination to get current page
-        CURRENT_SELECTOR = ".list-tool-pagination .btn-group .btn-group-cell .is-current::text"
-        current_page = response.css(CURRENT_SELECTOR).extract_first()
-        if current_page:
-            next_page = int(current_page) + 1
+        # CURRENT_SELECTOR = ".list-tool-pagination .btn-group .btn-group-cell .is-current::text"
+        # current_page = response.css(CURRENT_SELECTOR).extract_first()
+        # if current_page:
+        #     next_page = int(current_page) + 1
 
-            print("Run next page: %s -> %s", current_page, next_page)
+        #     print("Run next page: %s -> %s", current_page, next_page)
 
-            yield scrapy.Request("https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-"+ str(next_page) +"?Tid=7709")
+        #     yield scrapy.Request("https://www.newegg.com/GPUs-Video-Graphics-Cards/SubCategory/ID-48/Page-"+ str(next_page) +"?Tid=7709")

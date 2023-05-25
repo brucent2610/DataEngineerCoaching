@@ -91,3 +91,10 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+# ROTATING_PROXY_LIST_PATH="proxy.txt"
+
+# DOWNLOADER_MIDDLEWARES = {
+#    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+#    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+# }
