@@ -66,3 +66,48 @@ cut -d ':' -f 1 ${filename} | sort | uniq | tr '[a-z]' '[A-Z]'
 #Linking Files
 - Hard link: another file name that points to same file in memory
 - Soft link: are just files that hold a file name of another file
+
+#Grep - Searching text in files
+```
+grep -i '${string}' file
+grep -ir '${string}' dir
+```
+**Note**
+- Grep Mac (FreeBSD) different grep Linux (GNU grep) using different regex engines
+
+#SED - Transform text with SED
+- Stream editor
+- Stream lines from input to output
+- Executing operations on each line
+```
+sed 's/${find_string}/${replace_string}' file
+sed -n 's/${find_string}/${replace_string}' file
+sed -n 's/${find_string}/${replace_string}/p' file
+sed -i 's/${find_string}/${replace_string}' file
+sed -i '/${find_string}/{g;p}; h' file
+```
+
+#Diff - See file different
+dfff ${file1} ${file2}
+
+#Task Optimization
+##Brace Expansion
+```
+touch file{1..50}
+mkdir directory/{A..Z}
+//Rename file
+mv Documents/my_images/{image.jpg,new.jpg}
+//Get many pages in web
+wget https://files.example.org/file{001..5}.html
+```
+##Recursive file operations
+```
+cat file | xargs touch
+find directory/ -name '*.bak' | xargs rm
+```
+##Cheking for destructive Operations
+Using -i option for prompt to make sure operation
+##Open Files with External Programs
+
+
+
