@@ -1,0 +1,11 @@
+BEGIN {
+    FS=OFS="\t";
+}
+{
+    if($5 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/) {
+        profit = $5 - $4;
+        printf "%s\t%.0f\n", $6, profit
+    }
+}
+END {
+}

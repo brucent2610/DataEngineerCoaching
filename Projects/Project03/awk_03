@@ -1,0 +1,26 @@
+BEGIN {
+    FS=OFS="\t";
+    min_revenue = 0;
+    min_movie = 0;
+    max_revenue = 0;
+    max_movie = 0;
+}
+
+{
+    if($5 ~ /^[0-9]+$/) {
+        if( (min_revenue == 0) || ($5 <= min_revenue) ) {
+            min_revenue = $5
+            min_movie = $6
+        }
+        if ( max_revenue <= $5 ) {
+            max_revenue = $5
+            max_movie = $6
+        }
+    }
+}
+
+END {
+    print "Title", "Revenue", "Movie"
+    print "Min Revenue", min_revenue, min_movie
+    print "Max Revenue", max_revenue, max_movie
+}

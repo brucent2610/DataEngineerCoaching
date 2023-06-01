@@ -1,0 +1,11 @@
+BEGIN {
+    FS=OFS="\t";
+}
+
+{
+    if(length($19) > 7.5) print $6 "\t" $19
+}
+
+END {
+
+} 

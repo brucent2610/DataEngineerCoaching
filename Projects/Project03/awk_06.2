@@ -1,0 +1,11 @@
+BEGIN {
+    FS=OFS="\t";
+}
+{
+    split($7, array, "|"); 
+    for (i = 1; i <= length(array); i++) {
+        printf "%s\n", array[i]
+    }
+}
+END {
+}

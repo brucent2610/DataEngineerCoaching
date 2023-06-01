@@ -1,0 +1,14 @@
+BEGIN {
+    FS=OFS="\t";
+    sum_revenue = 0;
+}
+
+{
+    if($5 ~ /^[0-9]+$/) {
+        sum_revenue = sum_revenue + $5
+    }
+}
+
+END {
+    printf "Total Revenue: %.0f", sum_revenue
+}
