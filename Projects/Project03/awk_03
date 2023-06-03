@@ -1,5 +1,5 @@
 BEGIN {
-    FS=OFS="\t";
+    FS=OFS=",";
     min_revenue = 0;
     min_movie = 0;
     max_revenue = 0;

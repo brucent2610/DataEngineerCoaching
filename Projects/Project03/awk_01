@@ -1,9 +1,23 @@
 BEGIN {
-    FS=OFS="\t";
+    FS=OFS=",";
 }
 
 {
-    if(length($19) > 7.5) print $6 "\t" $19
+    if(NR > 1) {
+        split($16, array, "/"); 
+        if(array[3] < 71 && array[3] > 30) {
+            array[1] = array[1] < 10 ? "0" array[1] : array[1]
+            array[2] = array[2] < 10 ? "0" array[2] : array[2]
+            new_date = "19" array[3] array[2] array[1];
+            $16 = new_date
+        }
+        else {
+            cmd="date -d \""$16"\" +%Y%m%d"; 
+            (cmd | getline $16); 
+            close(cmd)
+        }
+        print
+    }
 }
 
 END {

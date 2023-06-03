@@ -1,5 +1,5 @@
 BEGIN {
-    FS=OFS="\t";
+    FS=OFS=",";
     sum_revenue = 0;
 }
 

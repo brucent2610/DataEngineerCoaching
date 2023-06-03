@@ -1,5 +1,5 @@
 BEGIN {
-    FS=OFS="\t";
+    FS=OFS=",";
 }
 {
     split($14, array, "|"); 
