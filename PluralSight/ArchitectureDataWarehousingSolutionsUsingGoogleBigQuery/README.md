@@ -404,3 +404,15 @@
 - Creating and Administering Google Cloud SQL Instances
 - Architecting Google Cloud Storage configurarion
 
+# Labs Note
+You can do some pretty useful things with arrays like:
+- finding the number of elements with ARRAY_LENGTH(<array>)
+- deduplicating elements with ARRAY_AGG(DISTINCT <field>)
+- ordering elements with ARRAY_AGG(<field> ORDER BY <field>)
+- limiting ARRAY_AGG(<field> LIMIT 5)
+
+We'll cover UNNEST() more in detail later but for now just know that:
+- You need to UNNEST() arrays to bring the array elements back into rows
+- UNNEST() always follows the table name in your FROM clause (think of it conceptually like a pre-joined table)
+
+The .* syntax tells BigQuery to return all fields for that STRUCT (much like it would if totals.* was a separate table we joined against).

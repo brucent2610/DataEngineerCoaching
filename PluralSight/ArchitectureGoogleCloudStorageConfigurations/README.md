@@ -255,3 +255,46 @@
 - Signed URLs for time-restricted access
 
 
+## Labs
+```
+gsutil mb -c multi_regional gs://${BUCKET}
+```
+- Create Bucket
+```
+gsutil ls gs://${BUCKET}/*
+```
+- List Objects
+```
+gsutil -m cp -r endpointslambda gs://${BUCKET}
+```
+- The -m option, to perform a parallel (multi-threaded/multi-processing) copy for faster performance. 
+- The -r option allows gsutil to recurse through directories.
+```
+gsutil -m rsync -d -r endpointslambda gs://${BUCKET}/endpointslambda
+```
+- In this command, the -d option deletes files from the target if they're missing in the source. 
+- The -r option runs the command recursively on directories.
+```
+gsutil -m acl set -R -a public-read gs://${BUCKET}
+```
+- Make Objects Public
+```
+gsutil cp -s nearline ${file} gs://${BUCKET}
+```
+- Copy with different storage class
+```
+gsutil ls -Lr gs://${BUCKET} | more
+```
+- Check storage classes
+```
+gsutil rm -rf gs://${BUCKET}/*
+```
+- Delete all objects in Bucket
+```
+gsutil rb gs://${BUCKET}
+```
+- Delete bucket
+```
+gsutil acl ch -u allUsers:R gs://${PROJECT_ID}-serving-bucket
+```
+- Make the bucket public
