@@ -416,3 +416,11 @@ We'll cover UNNEST() more in detail later but for now just know that:
 - UNNEST() always follows the table name in your FROM clause (think of it conceptually like a pre-joined table)
 
 The .* syntax tells BigQuery to return all fields for that STRUCT (much like it would if totals.* was a separate table we joined against).
+
+Recap of STRUCTs:
+- A SQL STRUCT is simply a container of other data fields which can be of different data types. The word struct means data structure. Recall the example from earlier: STRUCT(``"Rudisha" as name, [23.4, 26.3, 26.4, 26.1] as splits``)`` AS runner
+- STRUCTs are given an alias (like runner above) and can conceptually be thought of as a table inside of your main table.
+- STRUCTs (and ARRAYs) must be unpacked before you can operate over their elements. Wrap an UNNEST() around the name of the struct itself or the struct field that is an array in order to unpack and flatten it.
+
+Compare the number of complaints and temperature using the CORR function.
+
