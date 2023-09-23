@@ -1,0 +1,35 @@
+Glamira
+- Định nghĩa 
+- Nội dung
+- Giá trị
+
+
+Spark
+Total Spark progress
+- Giả sử cấp 4
+- Master có cần cao hay thấp hơn
+- Sizing (dựa trên dữ liệu và tính toán)
+- Cơ chế xử lý tính toán (chú ý phần này)
+
+Tại sao BigQuery có SQL
+Sizing chạy trong vòng bao lâu
+
+Design Architecture
+- Batching
+- Streaming
+
+Kafka
+- Failed sẽ xử lý ntn
+- 1 tiếng vừa rồi data ở đâu
+- Tại sao nó trả dữ liệu nhanh
+- Đóng băng
+- missing dữ liệu
+- Khởi tạo lại ntn
+
+Bản chất BigData
+- Dữ liệu có bị mất không
+
+Next actions
+- Review lại
+- Nắm lý thuyết
+- Vào luôn vào dự án
